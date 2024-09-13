@@ -14,7 +14,7 @@ javascript:(function() {
         // なければやらない
         if(collectedURLs.length > nextinfo) {
             // 改行を入れてテキストに変換
-            var data = collectedURLs.join('\n');
+            var data = collectedURLs.join('\r\n');
             
             // Blobオブジェクトを作成
             var blob = new Blob([data], { type: 'text/plain' });
