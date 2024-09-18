@@ -6,16 +6,15 @@ javascript:(async function() {
     const elements = document.querySelectorAll('div.collection-name.ng-binding');
   
     // 一致する要素を探し、その親の親をクリック
-    elements.some(function(element) {
+    for (const element of elements) {
       if (element.innerText === clipboardText) {
         const parentDiv = element.closest('div').parentElement;
         if (parentDiv) {
           parentDiv.click();
+          break; // ここでループを終了
         }
-        return true; // ここでtrueを返すとループが終了します
       }
-      return false;
-    });
+    }
     
   })();
   
