@@ -6,7 +6,7 @@ javascript:(function() {
 
     if (currentURL.indexOf('https://search.rakuten.co.jp/') !== -1) {
         links = [...new Set(
-            [...document.querySelectorAll('a[class*="image-link-wrapper"]')]
+            [...document.querySelectorAll('a[class*="dui-item"]')]
             .map(a => a.href)
             .filter(href => href.startsWith('https://item.rakuten.co.jp/'))
         )].join('\n');
