@@ -2,12 +2,15 @@
 javascript:(function() {
     // リンクを取得してセットに追加し、重複を除去
     let links;
-    if (window.location.href.startsWith('https://search.rakuten.co.jp/')) {
+    let currentURL = window.location.href;
+
+    if (currentURL.indexOf('https://search.rakuten.co.jp/') !== -1) {
         links = [...new Set(
             [...document.querySelectorAll('a[class*="image-link-wrapper"]')]
             .map(a => a.href)
+            .filter(href => href.startsWith('https://item.rakuten.co.jp/'))
         )].join('\n');
-    } else if (window.location.href.startsWith('https://affiliate.rakuten.co.jp/')) {
+    } else if (currentURL.indexOf('https://affiliate.rakuten.co.jp/') !== -1) {
         links = [...new Set(
             [...document.querySelectorAll('.raf-product__textBox a')]
             .map(a => a.href)
