@@ -26,7 +26,7 @@ javascript:(function() {
         // 共有を実行
         navigator.share({
             title: '楽天商品リンク',
-            text: links
+            text: "🙊" + links
         }).then(() => {
             alert('リンクを共有しました。');
         }).catch((error) => {
