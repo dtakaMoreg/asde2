@@ -8,10 +8,19 @@ javascript:(function() {
     if (window.location.href === targetUrl) {
       // local_storage_click_countの取得、存在しない場合は0に設定
       let clickCount = parseInt(localStorage.getItem(localStorageKeyCount)) || 0;
-  
+     
+      // 前回の処理が終わっているかどうかを示すフラグをwindowオブジェクトに保存
+      if (window.isProcessing_a) {
+        console.log("前回の処理がまだ終わっていません");
+        return;
+    }
       // clickCount個目のelements_aが存在するか確認
       function clickElementIfExists() {
         
+        // 処理開始時にフラグをtrueに設定
+        window.isProcessing_a = true;
+        console.log("処理を開始しました");
+
         // elements_aとelements_bを取得
         let divs = document.querySelectorAll('div[class*="masonry-grid-column"]');
         let elements_a = [];
@@ -34,6 +43,11 @@ javascript:(function() {
           // local_storage_click_countをインクリメントして保存
           clickCount++;
           localStorage.setItem(localStorageKeyCount, clickCount);
+          
+          // 処理完了時にフラグをfalseに戻す
+          window.isProcessing_a = false;
+          console.log("処理が完了しました");
+
         } else {
           // elements_aが足りない場合はスクロールして再チェック
           window.scrollBy(0, 1000); // スクロールダウン
