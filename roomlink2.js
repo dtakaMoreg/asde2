@@ -2,7 +2,7 @@ javascript:(function() {
     // 定数の設定
     const targetUrl = "https://room.rakuten.co.jp/room_f45d756af1/items";
     const localStorageKeyCount = "local_storage_click_count_a";
-    const localStorageKeyUrls = "local_storage_save_urls";
+    const localStorageKeyUrls = "local_storage_save_urls_a";
   
     // 現在のURLが対象URLであるか確認
     if (window.location.href === targetUrl) {
