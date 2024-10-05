@@ -1,7 +1,7 @@
 javascript:(function() {
     // 定数の設定
     const targetUrl = "https://room.rakuten.co.jp/room_f45d756af1/items";
-    const localStorageKeyCount = "local_storage_click_count";
+    const localStorageKeyCount = "local_storage_click_count_a";
     const localStorageKeyUrls = "local_storage_save_urls";
   
     // 現在のURLが対象URLであるか確認
@@ -11,13 +11,14 @@ javascript:(function() {
   
       // clickCount個目のelements_aが存在するか確認
       function clickElementIfExists() {
+        
         // elements_aとelements_bを取得
-        const divs = document.querySelectorAll('div[class*="masonry-grid-column"]');
+        let divs = document.querySelectorAll('div[class*="masonry-grid-column"]');
         let elements_a = [];
         let elements_b = [];
     
         if (divs[0]) {
-          const links_a = divs[0].querySelectorAll('a[class*="link-image"]');
+          let links_a = divs[0].querySelectorAll('a[class*="link-image"]');
           links_a.forEach(link => elements_a.push(link));
         }
     
