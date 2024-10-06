@@ -65,7 +65,8 @@ javascript:(function() {
       localStorage.setItem(localStorageKeyUrls, JSON.stringify(savedUrls));
   
       // 前のページに戻る
-      window.history.back();
+      window.location.href = "https://room.rakuten.co.jp/room_f45d756af1/items";
+
     }
   })();
   
