@@ -2,7 +2,7 @@ javascript:(function() {
     // local_storage_save_urls_aとlocal_storage_save_urls_bを取得
     let savedUrlsA = localStorage.getItem('local_storage_save_urls_a');
     let savedUrlsB = localStorage.getItem('local_storage_save_urls_b');
-
+debugger
     if (!savedUrlsA && !savedUrlsB) {
         alert('No URLs saved to download.');
         return;
