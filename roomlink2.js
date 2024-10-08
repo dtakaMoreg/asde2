@@ -2,7 +2,7 @@ javascript:(function() {
     // URL引数のtarget_countを取得
     const params = new URLSearchParams(window.location.search);
     const target_count = params.get('target_count') || 0; // target_countのデフォルトは0
-
+    alert(target_count)
   // 定数の設定
     const targetUrl = "https://room.rakuten.co.jp/room_f45d756af1/items";
     const localStorageKeyCount = "local_storage_click_count_" + target_count;
