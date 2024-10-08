@@ -5,7 +5,7 @@ javascript:(function() {
     //alert(target_count)
   // 定数の設定
     const target_count=6;
-    const targetUrl = "https://room.rakuten.co.jp/room_f45d756af1/items";
+    const targetUrl = "https://room.rakuten.co.jp/room_f45d756af1/items?unavailable_item=1";
     const localStorageKeyCount = "local_storage_click_count_" + target_count;
     const localStorageKeyUrls = "local_storage_save_urls_" + target_count;
   
