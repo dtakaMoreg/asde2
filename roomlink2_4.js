@@ -63,7 +63,7 @@ javascript:(function() {
       clickElementIfExists();
   
     } else if (window.location.href.includes("https://room.rakuten.co.jp/room_f45d756af1/") &&
-               !window.location.href.includes("https://room.rakuten.co.jp/room_f45d756af1/items")) {
+               !window.location.href.includes(targetUrl)) {
   
       // 対象外のURLの場合、local_storage_save_urlsに保存し、前のページに戻る
       let savedUrls = JSON.parse(localStorage.getItem(localStorageKeyUrls)) || [];
@@ -71,7 +71,7 @@ javascript:(function() {
       localStorage.setItem(localStorageKeyUrls, JSON.stringify(savedUrls));
   
       // 前のページに戻る
-      window.location.href = "https://room.rakuten.co.jp/room_f45d756af1/items";
+      window.location.href = targetUrl;
 
     }
     //ページ開き中はなにもしない
