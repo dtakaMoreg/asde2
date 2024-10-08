@@ -50,8 +50,8 @@ javascript:(function() {
 
         } else {
           // elements_aが足りない場合はスクロールして再チェック
-          window.scrollBy(0, 1000); // スクロールダウン
-          setTimeout(clickElementIfExists, 1000); // 再試行
+          window.scrollBy(0, 2000); // スクロールダウン
+          setTimeout(clickElementIfExists, 700); // 再試行
         }
       }
   
