@@ -18,7 +18,8 @@ javascript:(function() {
       if (window.isProcessing) {
         console.log("前回の処理がまだ終わっていません");
         return;
-    }
+      }
+
       // clickCount個目のelements_aが存在するか確認
       function clickElementIfExists() {
         
@@ -40,7 +41,7 @@ javascript:(function() {
           links.forEach(link => elements[i].push(link));
         }
 
-        if (clickCount < elements[target_count].length) {
+        if (elements[target_count] && clickCount < elements[target_count].length) {
           // elements[target_count][clickCount]が存在する場合はクリック
           elements[target_count][clickCount].click();
 
