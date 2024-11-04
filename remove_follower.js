@@ -628,6 +628,8 @@ javascript:(function(){
         // ページがこのURLであれば、次のURLを開く
         if (currentIndex < urls.length) {
             window.open(urls[currentIndex], '_blank'); // 新しいウィンドウで開く
+            // 次のURLインデックスを保存し、インデックスを更新
+            localStorage.setItem('currentUrlIndex', currentIndex + 1);
         } else {
         alert("全てのURLが処理されました");
         }
@@ -642,8 +644,7 @@ javascript:(function(){
       }
       // クリック後、少し待ってからページを閉じる
       setTimeout(function() {
-        // 次のURLインデックスを保存し、インデックスを更新
-        localStorage.setItem('currentUrlIndex', currentIndex + 1);
+
         window.close();
       }, 1000); // 1秒待機してから閉じます
     }
