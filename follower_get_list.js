@@ -103,7 +103,8 @@ javascript:(function() {
             let seconds = String(now.getSeconds()).padStart(2, '0');
             
             // ファイル名を作成
-            let filename = `follower_${year}${month}${day}${hours}${minutes}${seconds}.json`;
+            //let filename = `follower_${year}${month}${day}${hours}${minutes}${seconds}.json`;
+            let filename = `follower.json`;
 
             // 結果をJSONとして保存（ブラウザでダウンロード）
             let blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
