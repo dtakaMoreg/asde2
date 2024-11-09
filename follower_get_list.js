@@ -57,7 +57,7 @@ javascript:(function() {
             });
 
             // スクロールが最後に到達したか確認する
-            if (isScrolledToBottom(scrollContainer) || divTags.length >= 100) {
+            if (isScrolledToBottom(scrollContainer) || divTags.length >= 300) {
                 clearInterval(interval);  // スクロール監視を停止
                 saveResults(divTags);  // 結果を保存
             } else {
