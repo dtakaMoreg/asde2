@@ -70,7 +70,7 @@ javascript:(function() {
         function isScrolledToBottom(scrollContainer) {
             let threshold = 1;  // 余裕を持たせるためのしきい値
             let isAtBottom = scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight <= threshold;
-            
+            alert(isAtBottom);
             if (isAtBottom) {
                 scrollCount++;  // スクロールが最下部に到達した回数をカウント
             } else {
