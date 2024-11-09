@@ -13,6 +13,7 @@ javascript:(function() {
             // 2秒後に処理を開始する
             setTimeout(() => {
                 console.log("Starting data extraction...");
+                navigator.clipboard.writeText("start");
                 let scrollContainer = document.querySelector("div#userList");
                 scrollUntilLimit(scrollContainer);
             }, 2000);  // 2秒の待機
@@ -110,6 +111,8 @@ javascript:(function() {
             a.href = URL.createObjectURL(blob);
             a.download = filename;
             a.click();
+
+            navigator.clipboard.writeText("end");
         }
     }
 
