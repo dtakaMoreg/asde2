@@ -77,7 +77,7 @@ javascript:(function() {
                 scrollCount = 0;  // 最下部に到達しなかった場合、カウントをリセット
             }
 
-            return scrollCount >= 10;  // 10回以上連続して最下部に到達した場合にtrueを返す
+            return scrollCount >= 50;  // 10回以上連続して最下部に到達した場合にtrueを返す
         }
 
         // 結果を保存する関数
