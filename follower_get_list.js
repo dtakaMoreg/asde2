@@ -1,7 +1,3 @@
-//ユーザページを開いた状態で以下を実行すると
-//そのユーザのフォロワーの情報を100人取得して
-//json形式でファイルダウンロードする
-
 javascript:(function() {
     // 最初にfollow-buttonを含むclass名のbuttonをクリックする
     function clickFollowButton() {
@@ -45,7 +41,7 @@ javascript:(function() {
         let divTags = [];  // ここでdivTagsを毎回リセット
         let scrollCount = 0;  // スクロールが最下部に到達した回数をカウント
 
-        let interval = setInterval(() => {
+        function performScroll() {
             // 新たに表示されたdiv要素を取得
             let newDivTags = Array.from(document.querySelectorAll('div[class*="profile-wrapper"]'));
 
@@ -58,26 +54,30 @@ javascript:(function() {
 
             // スクロールが最後に到達したか確認する
             if (isScrolledToBottom(scrollContainer) || divTags.length >= 300) {
-                clearInterval(interval);  // スクロール監視を停止
                 saveResults(divTags);  // 結果を保存
             } else {
                 // スクロールを下に進める
                 scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+                // 再びスクロール処理をセット（再帰的に呼び出す）
+                setTimeout(performScroll, 200);  // 200ms後に再度スクロール
             }
-        }, 200);  // 200msごとにスクロールの状態をチェック
+        }
+
+        // スクロール処理を初めて呼び出す
+        performScroll();
 
         // スクロールが最後に到達したか確認する関数
         function isScrolledToBottom(scrollContainer) {
             let threshold = 1;  // 余裕を持たせるためのしきい値
             let isAtBottom = scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight <= threshold;
-            alert(isAtBottom);
             if (isAtBottom) {
                 scrollCount++;  // スクロールが最下部に到達した回数をカウント
             } else {
                 scrollCount = 0;  // 最下部に到達しなかった場合、カウントをリセット
             }
 
-            return scrollCount >= 50;  // 10回以上連続して最下部に到達した場合にtrueを返す
+            return scrollCount >= 50;  // 50回以上連続して最下部に到達した場合にtrueを返す
         }
 
         // 結果を保存する関数
