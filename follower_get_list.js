@@ -1,6 +1,6 @@
 javascript:(function() {
 
-    const MAX_DIV_TAGS = 500;  // 定数として300を設定
+    const MAX_DIV_TAGS = 1000;
 
     // 最初にfollow-buttonを含むclass名のbuttonをクリックする
     function clickFollowButton() {
