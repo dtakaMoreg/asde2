@@ -1,57 +1,127 @@
-function doPost(e) {
-    // POSTされたデータを取得（複数データの場合、配列で渡されることを想定）
-    const jsonDataArray = JSON.parse(e.postData.contents);
-  
-    // 対象のスプレッドシートとシートを取得
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('follower');
-  
-    // A列とC列のすべてのデータを一度に取得
-    const columnAValues = sheet.getRange('A:A').getValues().flat();
-    const columnCValues = sheet.getRange('C:C').getValues().flat();
-  
-    // A列とC列に追加するデータを保存する配列
-    const dataToAddToA = [];
-    const dataToAddToC = [];
-  
-    // 各データを処理する
-    jsonDataArray.forEach(function(jsonData) {
-      const roomUrl = jsonData.roomUrl;
-      const rank = jsonData.rank;
-      const followInfo = jsonData.followInfo;
-      const followStatus = jsonData.followStatus;  // followStatusを取得
-  
-      // "rank"が"s"の場合はA列に追加
-      if (rank === 's') {
-        // A列に重複するroomUrlがないか確認
-        if (!columnAValues.includes(roomUrl)) {
-          dataToAddToA.push(roomUrl); // A列に追加するデータを保存
+javascript:(function() {
+
+    const MAX_DIV_TAGS = 300;  // 定数として300を設定
+
+    // 最初にfollow-buttonを含むclass名のbuttonをクリックする
+    function clickFollowButton() {
+        let followButtons = document.querySelectorAll("button[class*='follow-button']");
+        if (followButtons.length > 1) {
+            let followButton = followButtons[1];  // 2つ目のボタンを選択（インデックスは0から始まるため1）
+            followButton.click();  // ボタンをクリック
+            console.log("Second follow button clicked");
+        
+            // 2秒後に処理を開始する
+            setTimeout(() => {
+                console.log("Starting data extraction...");
+                navigator.clipboard.writeText("start");
+                let scrollContainer = document.querySelector("div#userList");
+                scrollUntilLimit(scrollContainer);
+            }, 2000);  // 2秒の待機
+        } else {
+            console.log("Follow button not found");
         }
-      }
-      // "rank"が"a", "b", "c"の場合、かつfollowStatusが「フォローする」の場合はC列に追加
-      else if (['a', 'b', 'c'].includes(rank) && followStatus === 'フォローする' && followInfo > 200) {
-        // C列に重複するroomUrlがないか確認
-        if (!columnCValues.includes(roomUrl)) {
-          dataToAddToC.push(roomUrl); // C列に追加するデータを保存
+    }
+
+    // データを抽出する関数
+    function extractData(divTag) {
+        let roomUrl = divTag.querySelector("a[class*='profile-name-content']") ? divTag.querySelector("a[class*='profile-name-content']").href : '';
+        let name = divTag.querySelector("span[class*='profile-name']") ? divTag.querySelector("span[class*='profile-name']").innerText : '';
+        let followStatus = divTag.querySelector("button") ? divTag.querySelector("button").innerText : '';
+        let rank = getRank(divTag);  // rank を取得する関数を追加
+        let followInfo = divTag.querySelector("div[class*='follow-info']") ? divTag.querySelector("div[class*='follow-info']").innerText.replace('フォロワー', '') : '';
+
+        // オブジェクト形式でデータを返す
+        return { name, roomUrl, rank, followInfo, followStatus };
+    }
+
+    // rank をクラス名の "room-rank-" の次の1文字を取得する関数
+    function getRank(divTag) {
+        let rankClass = divTag.querySelector("div[class*='room-rank-']") ? divTag.querySelector("div[class*='room-rank-']").className : '';
+        let match = rankClass.match(/room-rank-(\w)/);  // "room-rank-" の後の文字（英数字）を取得
+
+        return match ? match[1] : '';  // マッチした場合はその文字を返す、マッチしなければ空文字
+    }
+
+    function scrollUntilLimit(scrollContainer) {
+        let divTags = [];  // ここでdivTagsを毎回リセット
+        let scrollCount = 0;  // スクロールが最下部に到達した回数をカウント
+
+        function performScroll() {
+            // 新たに表示されたdiv要素を取得
+            let newDivTags = Array.from(document.querySelectorAll('div[class*="profile-wrapper"]'));
+
+            // divTagsに新しい要素があれば追加
+            newDivTags.forEach(newDiv => {
+                if (!divTags.includes(newDiv)) {
+                    divTags.push(newDiv);
+                }
+            });
+
+            // スクロールが最後に到達したか確認する
+            if (isScrolledToBottom(scrollContainer) || divTags.length >= MAX_DIV_TAGS) {
+                saveResults(divTags);  // 結果を保存
+            } else {
+                // スクロールを下に進める
+                scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+                // 再びスクロール処理をセット（再帰的に呼び出す）
+                setTimeout(performScroll, 200);  // 200ms後に再度スクロール
+            }
         }
-      }
-    });
-  
-    // A列にデータを追加
-    if (dataToAddToA.length > 0) {
-      let lastRowA = columnAValues.filter(String).length; // A列の最後の行を取得
-      dataToAddToA.forEach((roomUrl, index) => {
-        sheet.getRange(lastRowA + 1 + index, 1).setValue(roomUrl); // A列にデータを一括追加
-      });
+
+        // スクロール処理を初めて呼び出す
+        performScroll();
+
+        // スクロールが最後に到達したか確認する関数
+        function isScrolledToBottom(scrollContainer) {
+            let threshold = 1;  // 余裕を持たせるためのしきい値
+            let isAtBottom = scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight <= threshold;
+            if (isAtBottom) {
+                scrollCount++;  // スクロールが最下部に到達した回数をカウント
+            } else {
+                scrollCount = 0;  // 最下部に到達しなかった場合、カウントをリセット
+            }
+
+            return scrollCount >= 50;  // 50回以上連続して最下部に到達した場合にtrueを返す
+        }
+
+        // 結果を保存する関数
+        function saveResults(divTags) {
+            let results = [];  // ローカル変数としてresultsを定義
+
+            // divTags[0] を除外する
+            let filteredDivTags = divTags.slice(1);  // 先頭の1つを除外
+
+            // 結果をオブジェクトとして保存
+            filteredDivTags.forEach(divTag => {
+                let result = extractData(divTag);
+                results.push(result);  // オブジェクトをresultsに追加
+            });
+
+            // 現在の日時を取得して、ファイル名を作成
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = String(now.getMonth() + 1).padStart(2, '0');  // 月は0から始まるので+1
+            let day = String(now.getDate()).padStart(2, '0');
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            let seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            // ファイル名を作成
+            let filename = `follower_${year}${month}${day}${hours}${minutes}${seconds}.json`;
+            //let filename = `follower.json`;
+
+            // 結果をJSONとして保存（ブラウザでダウンロード）
+            let blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+
+            navigator.clipboard.writeText("end");
+        }
     }
-  
-    // C列にデータを追加
-    if (dataToAddToC.length > 0) {
-      let lastRowC = columnCValues.filter(String).length; // C列の最後の行を取得
-      dataToAddToC.forEach((roomUrl, index) => {
-        sheet.getRange(lastRowC + 1 + index, 3).setValue(roomUrl); // C列にデータを一括追加
-      });
-    }
-  
-    return ContentService.createTextOutput('Success');
-  }
-  
+
+    // 最初にfollow-buttonをクリックしてから処理を開始
+    clickFollowButton();
+})();
