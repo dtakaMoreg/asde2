@@ -1,4 +1,7 @@
 javascript:(function() {
+
+    const MAX_DIV_TAGS = 300;  // 定数として300を設定
+
     // 最初にfollow-buttonを含むclass名のbuttonをクリックする
     function clickFollowButton() {
         let followButtons = document.querySelectorAll("button[class*='follow-button']");
@@ -54,7 +57,7 @@ javascript:(function() {
             });
 
             // スクロールが最後に到達したか確認する
-            if (isScrolledToBottom(scrollContainer) || divTags.length >= 300) {
+            if (isScrolledToBottom(scrollContainer) || divTags.length >= MAX_DIV_TAGS) {
                 saveResults(divTags);  // 結果を保存
             } else {
                 // スクロールを下に進める
