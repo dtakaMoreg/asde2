@@ -1,11 +1,12 @@
 javascript:(function() {
     // 最初にfollow-buttonを含むclass名のbuttonをクリックする
     function clickFollowButton() {
-        let followButton = document.querySelector("button[class*='follow-button']");
-        if (followButton) {
+        let followButtons = document.querySelectorAll("button[class*='follow-button']");
+        if (followButtons.length > 1) {
+            let followButton = followButtons[1];  // 2つ目のボタンを選択（インデックスは0から始まるため1）
             followButton.click();  // ボタンをクリック
-            console.log("Follow button clicked");
-
+            console.log("Second follow button clicked");
+        
             // 2秒後に処理を開始する
             setTimeout(() => {
                 console.log("Starting data extraction...");
