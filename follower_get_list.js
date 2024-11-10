@@ -28,9 +28,10 @@ javascript:(function() {
         let name = divTag.querySelector("span[class*='profile-name']") ? divTag.querySelector("span[class*='profile-name']").innerText : '';
         let followStatus = divTag.querySelector("button") ? divTag.querySelector("button").innerText : '';
         let rank = getRank(divTag);  // rank を取得する関数を追加
+        let followInfo = divTag.querySelector("div[class*='follow-info']") ? divTag.querySelector("div[class*='follow-info']").innerText.replace('フォロワー', '') : '';
 
         // オブジェクト形式でデータを返す
-        return { name, roomUrl, rank, followStatus };
+        return { name, roomUrl, rank, followInfo, followStatus };
     }
 
     // rank をクラス名の "room-rank-" の次の1文字を取得する関数
