@@ -1,4 +1,4 @@
-//楽天アフィリエイトの高利率ページからURLを取得するブックマークレット
+// 楽天アフィリエイトの高利率ページからURLを取得するブックマークレット
 javascript:(function() {
     // リンクを取得してセットに追加し、重複を除去
     let links;
@@ -7,13 +7,13 @@ javascript:(function() {
     if (currentURL.indexOf('https://search.rakuten.co.jp/') !== -1) {
         links = [...new Set(
             [...document.querySelectorAll('a[class*="dui-item"]')]
-            .map(a => a.href)
+            .map(a => a.href.split('?')[0]) // ? 以降を削除
             .filter(href => href.startsWith('https://item.rakuten.co.jp/'))
         )].join('\n');
     } else if (currentURL.indexOf('https://affiliate.rakuten.co.jp/') !== -1) {
         links = [...new Set(
             [...document.querySelectorAll('.raf-product__textBox a')]
-            .map(a => a.href)
+            .map(a => a.href.split('?')[0]) // ? 以降を削除
             .filter(href => href.startsWith('https://item.rakuten.co.jp/'))
         )].join('\n');
     } else {
