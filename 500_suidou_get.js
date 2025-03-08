@@ -1,3 +1,6 @@
+
+//横浜市水道局のサイトの料金照会を開いた状態で実行すると
+//1つ目の使用料などをalert出力する
 javascript:(function(){
     var table = document.getElementById("table_crad");
     if (table) {
