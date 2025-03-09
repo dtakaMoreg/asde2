@@ -28,7 +28,7 @@ javascript:(async function() {
           setTimeout(() => submitButton.click(), 500); // 0.5秒遅延してクリック
         }
   
-        alert("ブログデータを入力し、公開しました！");
+        //alert("ブログデータを入力し、公開しました！");
       } else {
         alert("クリップボードのデータが正しいJSON形式ではありません。");
       }
