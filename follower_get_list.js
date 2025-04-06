@@ -87,39 +87,45 @@ javascript:(function() {
 
         // 結果を保存する関数
         function saveResults(divTags) {
-            let results = [];  // ローカル変数としてresultsを定義
-
-            // divTags[0] を除外する
-            let filteredDivTags = divTags.slice(1);  // 先頭の1つを除外
-
-            // 結果をオブジェクトとして保存
+            let results = [];
+        
+            let filteredDivTags = divTags.slice(1); // 先頭除外
+        
             filteredDivTags.forEach(divTag => {
                 let result = extractData(divTag);
-                results.push(result);  // オブジェクトをresultsに追加
+                results.push(result);
             });
-
-            // 現在の日時を取得して、ファイル名を作成
+        
+            // モードを指定
+            let mode = "addFollower";
+        
+            // 結果をオブジェクトにまとめる
+            let finalData = {
+                mode: mode,
+                data: results
+            };
+        
+            // 日付でファイル名作成
             let now = new Date();
             let year = now.getFullYear();
-            let month = String(now.getMonth() + 1).padStart(2, '0');  // 月は0から始まるので+1
+            let month = String(now.getMonth() + 1).padStart(2, '0');
             let day = String(now.getDate()).padStart(2, '0');
             let hours = String(now.getHours()).padStart(2, '0');
             let minutes = String(now.getMinutes()).padStart(2, '0');
             let seconds = String(now.getSeconds()).padStart(2, '0');
             
-            // ファイル名を作成
             let filename = `follower_${year}${month}${day}${hours}${minutes}${seconds}.json`;
-            //let filename = `follower.json`;
-
-            // 結果をJSONとして保存（ブラウザでダウンロード）
-            let blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+        
+            // JSON出力
+            let blob = new Blob([JSON.stringify(finalData, null, 2)], { type: 'application/json' });
             let a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = filename;
             a.click();
-
+        
             navigator.clipboard.writeText("end");
         }
+        
     }
 
     // 最初にfollow-buttonをクリックしてから処理を開始
