@@ -8,7 +8,7 @@ javascript:(function() {
             const key = localStorage.key(i);
             if (key.startsWith('room_click_')) {
                 const value = localStorage.getItem(key);
-                urls.push(value);
+                urls.push(key+':'+value);
             }
         }
 
